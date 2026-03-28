@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -8,112 +9,114 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin:0;
-  font-family:'Poppins', sans-serif;
-  background:#f8fafc;
-  color:#0f172a;
+body{
+margin:0;
+font-family:'Poppins', sans-serif;
+background:#f8fafc;
+color:#0f172a;
 }
 
-/* HEADER */
-header {
-  background: linear-gradient(90deg, #2563eb, #1e3a8a);
-  color:white;
-  padding:20px;
-  text-align:center;
-  font-size:28px;
+header{
+background: linear-gradient(90deg,#2563eb,#1e3a8a);
+color:white;
+padding:20px;
+text-align:center;
+font-size:28px;
 }
 
-/* NAV */
-nav {
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  background:#60a5fa;
-  padding:10px;
+#usuario{
+font-size:14px;
+margin-top:5px;
 }
 
-nav button {
-  border:none;
-  padding:10px 20px;
-  border-radius:20px;
-  background:#2563eb;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
+nav{
+display:flex;
+justify-content:center;
+gap:10px;
+background:#60a5fa;
+padding:10px;
 }
 
-nav button:hover {
-  transform:scale(1.05);
+nav button{
+border:none;
+padding:10px 20px;
+border-radius:20px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+transition:0.3s;
 }
 
-/* CONTAINER */
-.container {
-  padding:30px;
-  max-width:1100px;
-  margin:auto;
+nav button:hover{
+transform:scale(1.05);
 }
 
-/* TELAS */
-.tela { display:none; }
-.ativa { display:block; }
-
-/* INPUT */
-input {
-  padding:10px;
-  margin:5px;
-  width:90%;
-  border-radius:8px;
-  border:1px solid #cbd5e1;
+.container{
+padding:30px;
+max-width:1100px;
+margin:auto;
 }
 
-/* PRODUTOS */
-.produtos {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
+.tela{display:none;}
+.ativa{display:block;}
+
+input{
+padding:10px;
+margin:5px;
+width:90%;
+border-radius:8px;
+border:1px solid #cbd5e1;
 }
 
-.produto {
-  background:white;
-  border-radius:12px;
-  padding:10px;
-  text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  transition:0.3s;
+.produtos{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
 }
 
-.produto:hover {
-  transform:translateY(-5px);
+.produto{
+background:white;
+border-radius:12px;
+padding:10px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.3s;
 }
 
-.produto img {
-  width:100%;
-  height:180px;
-  object-fit:cover;
-  border-radius:8px;
+.produto:hover{
+transform:translateY(-5px);
 }
 
-/* BOTÃO */
-button {
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
-  border:none;
-  padding:10px;
-  border-radius:10px;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
+.produto img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:8px;
 }
 
-button:hover {
-  transform:scale(1.05);
+button{
+background: linear-gradient(135deg,#2563eb,#60a5fa);
+border:none;
+padding:10px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
 }
 </style>
+
 </head>
 
 <body>
 
-<header>Oliveira Artigos 🛍️</header>
+<header>
+Oliveira Artigos 🛍️
+<p id="usuario"></p>
+</header>
 
 <nav>
 <button onclick="mostrar('home')">Home</button>
@@ -132,6 +135,7 @@ button:hover {
 
 <div id="loja" class="tela">
 <h2>Produtos</h2>
+
 <div class="produtos">
 
 <div class="produto">
@@ -188,25 +192,26 @@ button:hover {
 
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-apiKey: "AIzaSyDoZfPMpTiSIO-iLpntGGyFR1Mq7Ak9jBc",
-authDomain: "oliveira-artios.firebaseapp.com",
-projectId: "oliveira-artios",
-storageBucket: "oliveira-artios.firebasestorage.app",
-messagingSenderId: "245567533464",
-appId: "1:245567533464:web:b87fc0ebcc8802232fbbed",
-measurementId: "G-4P71TME6BF"
+
+const firebaseConfig={
+apiKey:"AIzaSyDoZfPMpTiSIO-iLpntGGyFR1Mq7Ak9jBc",
+authDomain:"oliveira-artios.firebaseapp.com",
+projectId:"oliveira-artios",
+storageBucket:"oliveira-artios.firebasestorage.app",
+messagingSenderId:"245567533464",
+appId:"1:245567533464:web:b87fc0ebcc8802232fbbed",
+measurementId:"G-4P71TME6BF"
 };
 
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const auth=firebase.auth();
 
-let carrinho = [];
+let carrinho=[];
 
 function mostrar(t){
 document.querySelectorAll('.tela').forEach(el=>el.classList.remove('ativa'));
@@ -216,37 +221,90 @@ document.getElementById(t).classList.add('ativa');
 function cadastrar(){
 const email=document.getElementById("emailCad").value;
 const senha=document.getElementById("senhaCad").value;
-if(email===""||senha===""){alert("Preencha tudo!");return;}
+
+if(email==""||senha==""){
+alert("Preencha tudo!");
+return;
+}
+
 auth.createUserWithEmailAndPassword(email,senha)
-.then(()=>{alert("Conta criada!");mostrar('login');})
+.then(()=>{
+alert("Conta criada!");
+mostrar('login');
+})
 .catch(e=>alert(e.message));
 }
 
 function login(){
 const email=document.getElementById("email").value;
 const senha=document.getElementById("senha").value;
+
 auth.signInWithEmailAndPassword(email,senha)
-.then(()=>{alert("Logado!");mostrar('home');})
+.then(()=>{
+alert("Logado!");
+mostrar('home');
+})
 .catch(e=>alert(e.message));
 }
 
+auth.onAuthStateChanged(user=>{
+if(user){
+document.getElementById("usuario").innerText="Logado: "+user.email;
+}
+});
+
 function addCarrinho(nome,preco){
 carrinho.push({nome,preco});
-alert("Adicionado!");
+alert("Adicionado ao carrinho!");
 }
 
 function abrirCarrinho(){
+
 mostrar('carrinho');
+
 let total=0;
 let lista=document.getElementById("lista");
+
 lista.innerHTML="";
-carrinho.forEach(i=>{
-lista.innerHTML+=`<li>${i.nome} - R$ ${i.preco}</li>`;
+
+carrinho.forEach((i,index)=>{
+
+lista.innerHTML+=`
+<li>
+${i.nome} - R$ ${i.preco}
+<button onclick="remover(${index})">Remover</button>
+</li>
+`;
+
 total+=i.preco;
+
 });
+
 document.getElementById("total").innerText="Total: R$ "+total;
-document.getElementById("checkout-btn").innerHTML="<button>Pagar</button>";
+
+document.getElementById("checkout-btn").innerHTML="<button onclick='pagar()'>Pagar</button>";
 }
+
+function remover(index){
+carrinho.splice(index,1);
+abrirCarrinho();
+}
+
+function pagar(){
+
+if(carrinho.length==0){
+alert("Carrinho vazio");
+return;
+}
+
+alert("Pagamento simulado! Obrigado pela compra.");
+
+carrinho=[];
+
+mostrar('home');
+
+}
+
 </script>
 
 </body>
