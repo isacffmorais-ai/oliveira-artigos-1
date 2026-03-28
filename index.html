@@ -297,11 +297,16 @@ alert("Carrinho vazio");
 return;
 }
 
-alert("Pagamento simulado! Obrigado pela compra.");
+let total=0;
 
-carrinho=[];
+carrinho.forEach(p=>{
+total+=p.preco;
+});
 
-mostrar('home');
+let pix="42778546804";
+
+alert("Total da compra: R$ "+total+
+"\n\nPague no PIX:\n"+pix);
 
 }
 
