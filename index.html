@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oliveira Artigos</title>
+<style>
+body { font-family:sans-serif; margin:0; background:#f0f4f8; color:#1e293b; }
+header { background:#0ea5e9; color:white; padding:20px; text-align:center; font-size:28px; font-weight:600; }
+nav { display:flex; justify-content:center; gap:10px; background:#38bdf8; padding:10px; }
+nav button { padding:10px 20px; border:none; border-radius:20px; background:#0284c7; color:white; cursor:pointer; transition:0.3s; }
+nav button:hover { background:#0c4a6e; }
+.container { padding:20px; max-width:1000px; margin:auto; }
+.tela { display:none; }
+.ativa { display:block; }
+input { padding:10px; margin:5px 0; width:95%; border-radius:5px; border:1px solid #94a3b8; }
+.produtos { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+.produto { background:white; padding:10px; border-radius:10px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+.produto img { width:100%; height:180px; object-fit:cover; border-radius:8px; }
+button { background:#0284c7; color:white; border:none; padding:10px; cursor:pointer; border-radius:8px; }
+button:hover { background:#0c4a6e; }
+#checkout-btn button { width:100%; }
+</style>
+</head>
+<body>
+
+<header>Oliveira Artigos 🛍️</header>
+
+<nav>
+<button onclick="mostrar('home')">Home</button>
+<button onclick="mostrar('loja')">Loja</button>
+<button onclick="mostrar('login')">Login</button>
+<button onclick="mostrar('cadastro')">Cadastro</button>
+<button onclick="abrirCarrinho()">Carrinho</button>
+</nav>
+
+<div class="container">
+
+<div id="home" class="tela ativa">
+<h2>Bem-vindo à Oliveira Artigos!</h2>
+<p>Moda com estilo e qualidade, direto para você.</p>
+</div>
+
+<div id="loja" class="tela">
+<h2>Produtos</h2>
+<div class="produtos">
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
+<h3>Camiseta Básica</h3>
+<p>R$ 79</p>
+<button onclick="addCarrinho('Camiseta Básica',79)">Comprar</button>
+</div>
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246">
+<h3>Calça Jeans</h3>
+<p>R$ 149</p>
+<button onclick="addCarrinho('Calça Jeans',149)">Comprar</button>
+</div>
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b">
+<h3>Jaqueta</h3>
+<p>R$ 199</p>
+<button onclick="addCarrinho('Jaqueta',199)">Comprar</button>
+</div>
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
+<h3>Vestido</h3>
+<p>R$ 129</p>
+<button onclick="addCarrinho('Vestido',129)">Comprar</button>
+</div>
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f">
+<h3>Moletom</h3>
+<p>R$ 159</p>
+<button onclick="addCarrinho('Moletom',159)">Comprar</button>
+</div>
+</div>
+</div>
+
+<div id="login" class="tela">
+<h2>Login</h2>
+<input id="email" placeholder="Email"><br>
+<input id="senha" type="password" placeholder="Senha"><br>
+<button onclick="login()">Entrar</button>
+</div>
+
+<div id="cadastro" class="tela">
+<h2>Criar Conta</h2>
+<input id="emailCad" placeholder="Email"><br>
+<input id="senhaCad" type="password" placeholder="Senha"><br>
+<button onclick="cadastrar()">Cadastrar</button>
+</div>
+
+<div id="carrinho" class="tela">
+<h2>Carrinho</h2>
+<ul id="lista"></ul>
+<p id="total"></p>
+<div id="checkout-btn"></div>
+</div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+// Config Firebase
+const firebaseConfig = {
+apiKey: "AIzaSyDoZfPMpTiSIO-iLpntGGyFR1Mq7Ak9jBc",
+authDomain: "oliveira-artios.firebaseapp.com",
+projectId: "oliveira-artios",
+storageBucket: "oliveira-artios.firebasestorage.app",
+messagingSenderId: "245567533464",
+appId: "1:245567533464:web:b87fc0ebcc8802232fbbed",
+measurementId: "G-4P71TME6BF"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+let carrinho = [];
+
+function mostrar(t){
+  document.querySelectorAll('.tela').forEach(el=>el.classList.remove('ativa'));
+  document.getElementById(t).classList.add('ativa');
+}
+
+function cadastrar(){
+  const email=document.getElementById("emailCad").value;
+  const senha=document.getElementById("senhaCad").value;
+  if(email===""||senha===""){alert("Preencha email e senha!"); return;}
+  auth.createUserWithEmailAndPassword(email, senha)
+  .then(()=>{alert("Cadastro realizado com sucesso! Agora faça login."); mostrar('login');})
+  .catch(e=>alert("Erro: "+e.message));
+}
+
+function login(){
+  const email=document.getElementById("email").value;
+  const senha=document.getElementById("senha").value;
+  if(email===""||senha===""){alert("Preencha email e senha!"); return;}
+  auth.signInWithEmailAndPassword(email, senha)
+  .then(()=>{alert("Login efetuado!"); mostrar('home');})
+  .catch(e=>alert("Erro: "+e.message));
+}
+
+function addCarrinho(nome, preco){
+  carrinho.push({nome, preco});
+  alert("Produto adicionado ao carrinho!");
+}
+
+function abrirCarrinho(){
+  mostrar('carrinho');
+  const lista=document.getElementById("lista"); lista.innerHTML="";
+  let total=0;
+  carrinho.forEach(i=>{lista.innerHTML+=`<li>${i.nome} - R$ ${i.preco}</li>`; total+=i.preco;});
+  document.getElementById("total").innerText="Total: R$ "+total;
+  document.getElementById("checkout-btn").innerHTML="<button onclick='alert(\"Conectar Mercado Pago aqui\")'>Pagar Agora</button>";
+}
+</script>
+
+</body>
+</html>
