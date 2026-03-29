@@ -65,7 +65,7 @@ footer{text-align:center;padding:20px;background:#2563eb;color:white;margin-top:
 </header>
 
 <div class="banner">
-<h1>Moda Masculina</h1>
+  <h1>Moda Masculina</h1>
 </div>
 
 <div class="container">
