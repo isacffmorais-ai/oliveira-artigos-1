@@ -122,6 +122,8 @@ footer{text-align:center;padding:20px;background:#2563eb;color:white;margin-top:
 <a onclick="mostrar('login')">Login</a>
 <a onclick="mostrar('cadastro')">Cadastro</a>
 <a onclick="abrirCarrinho()">Carrinho</a>
+<span id="usuarioLogado" style="margin-left:20px;font-weight:600;color:#2563eb;"></span>
+<button id="btnSair" onclick="sair()" style="display:none;margin-left:15px;">Sair</button>
 </nav>
 </header>
 
@@ -193,19 +195,32 @@ footer{text-align:center;padding:20px;background:#2563eb;color:white;margin-top:
 <p>© 2026 Oliveira Artigos - Todos os direitos reservados</p>
 <p>Siga-nos: Instagram | Facebook | WhatsApp</p>
 </footer>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDvyxBJhkNUK5YoJDXFSDUhvqFCLh0Go0w",
+  authDomain: "oliveira-artigos.firebaseapp.com",
+  projectId: "oliveira-artigos",
+  storageBucket: "oliveira-artigos.firebasestorage.app",
+  messagingSenderId: "105452140581",
+  appId: "1:105452140581:web:bf450dee9f0836339ea7cc",
+  measurementId: "G-KZY7YY67LE"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+/* ===== LOJA ===== */
+
 let carrinho = [];
 let produtos = [
 {name:"Camiseta Premium",preco:79,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",categoria:"Camisetas",novo:true},
 {name:"Calça Jeans",preco:149,img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246",categoria:"Calças",novo:false},
 {name:"Jaqueta Casual",preco:199,img:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b",categoria:"Jaquetas",novo:true},
-{name:"Moleton Conforto",preco:129,img:"https://images.unsplash.com/photo-1581091012184-1e8b1f1f6fdf",categoria:"Moletons",novo:false},
-{name:"Tênis Esportivo",preco:249,img:"https://images.unsplash.com/photo-1562158071-5187f75a1586",categoria:"Tênis",novo:true},
-{name:"Camisa Social",preco:179,img:"https://images.unsplash.com/photo-1600180758895-42c771c7d03b",categoria:"Camisetas",novo:false},
-{name:"Camisa Polo",preco:139,img:"https://images.unsplash.com/photo-1602810315794-9e22e61d76f3",categoria:"Camisetas",novo:true},
-{name:"Bermuda Casual",preco:89,img:"https://images.unsplash.com/photo-1600180758885-7c1a8b2f8e49",categoria:"Calças",novo:false},
-{name:"Moleton Canguru",preco:159,img:"https://images.unsplash.com/photo-1581349481915-9a91df4d57b3",categoria:"Moletons",novo:true}
+{name:"Moleton Conforto",preco:129,img:"https://images.unsplash.com/photo-1581091012184-1e8b1f1f6fdf",categoria:"Moletons",novo:false}
 ];
 
 function mostrar(t){
@@ -220,10 +235,10 @@ let container=document.getElementById("produtosLista");
 container.innerHTML="";
 lista.forEach(p=>{
 container.innerHTML+=`<div class="produto">
-${p.novo?'<span class="novo">Novo</span>':''}
 <img src="${p.img}">
-<div class="info"><h3>${p.nome}</h3><p class="preco">R$${p.preco}</p>
-<p>Tamanho: P/M/G | Cor: Variada</p>
+<div class="info">
+<h3>${p.nome}</h3>
+<p class="preco">R$${p.preco}</p>
 <button onclick="addCarrinho('${p.nome}',${p.preco})">Comprar</button>
 </div></div>`;
 });
@@ -234,48 +249,62 @@ let container=document.getElementById("destaques");
 container.innerHTML="";
 produtos.slice(0,4).forEach(p=>{
 container.innerHTML+=`<div class="produto">
-${p.novo?'<span class="novo">Novo</span>':''}
 <img src="${p.img}">
-<div class="info"><h3>${p.nome}</h3><p class="preco">R$${p.preco}</p></div></div>`;
+<div class="info">
+<h3>${p.nome}</h3>
+<p class="preco">R$${p.preco}</p>
+</div></div>`;
 });
 }
 
-function filtrarProdutos(){
-let filtro=document.getElementById("pesquisa").value.toLowerCase();
-let filtrados = produtos.filter(p=>p.nome.toLowerCase().includes(filtro));
-renderizarProdutos(filtrados);
+/* ===== LOGIN ===== */
+
+function cadastrar(){
+let email=document.getElementById("emailCad").value;
+let senha=document.getElementById("senhaCad").value;
+
+auth.createUserWithEmailAndPassword(email, senha)
+.then(()=>{alert("Conta criada!");mostrar("login");})
+.catch(e=>alert(e.message));
 }
 
-function filtrarCategoria(cat){
-if(cat==="Todos"){renderizarProdutos(produtos); return;}
-let filtrados = produtos.filter(p=>p.categoria===cat);
-renderizarProdutos(filtrados);
+function login(){
+let email=document.getElementById("emailLogin").value;
+let senha=document.getElementById("senhaLogin").value;
+
+auth.signInWithEmailAndPassword(email, senha)
+.then(()=>{alert("Login realizado!");mostrar("loja");})
+.catch(()=>alert("Erro login"));
 }
 
-function addCarrinho(nome,preco){
-carrinho.push({nome,preco});
-alert("Produto adicionado ao carrinho");
-abrirCarrinho();
-}
+/* ===== SAIR ===== */
 
-function abrirCarrinho(){mostrar("carrinho");atualizarCarrinho();}
-function atualizarCarrinho(){
-let lista=document.getElementById("lista");lista.innerHTML="";
-let total=0;
-carrinho.forEach((p,index)=>{
-lista.innerHTML+=`<li>${p.nome} - R$${p.preco} <button class="remover" onclick="removerCarrinho(${index})">X</button></li>`;
-total+=p.preco;
+function sair(){
+auth.signOut().then(()=>{
+alert("Saiu");
+mostrar("home");
 });
-document.getElementById("total").innerText="Total: R$ "+total;
 }
 
-function removerCarrinho(i){carrinho.splice(i,1);atualizarCarrinho();}
-function pagar(){let total=0;carrinho.forEach(p=>{total+=p.preco;});document.getElementById("valorPix").innerText="Total: R$ "+total;mostrar("pagamento");}
-function copiarPix(){let chave=document.getElementById("pixKey").innerText;navigator.clipboard.writeText(chave);alert("Chave PIX copiada!");}
-function confirmarPagamento(){alert("Pedido enviado!");carrinho=[];mostrar("home");}
-function cadastrar(){let email=document.getElementById("emailCad").value;let senha=document.getElementById("senhaCad").value;if(email && senha){localStorage.setItem("usuarioEmail",email);localStorage.setItem("usuarioSenha",senha);alert("Conta criada!");mostrar("login");}else{alert("Preencha todos os campos!");}}
-function login(){let email=document.getElementById("emailLogin").value;let senha=document.getElementById("senhaLogin").value;let emailSalvo=localStorage.getItem("usuarioEmail");let senhaSalva=localStorage.getItem("usuarioSenha");if(email===emailSalvo && senha===senhaSalva){alert("Login realizado!");mostrar("loja");}else{alert("Email ou senha incorretos");}}
+/* ===== USUARIO ===== */
+
+auth.onAuthStateChanged(user=>{
+let u=document.getElementById("usuarioLogado");
+let b=document.getElementById("btnSair");
+
+if(user){
+u.innerText="Olá, "+user.email;
+b.style.display="inline-block";
+}else{
+u.innerText="";
+b.style.display="none";
+}
+});
+
+/* ===== START ===== */
+
 renderizarDestaques();
+
 </script>
 </body>
 </html>
