@@ -14,7 +14,7 @@ nav a{text-decoration:none;color:#333;cursor:pointer;font-weight:500;margin-left
 nav a:hover{color:#2563eb;}
 .banner{
   background:
-    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     url("banner.jpg");
   background-size:cover;
   background-position:center;
@@ -24,6 +24,67 @@ nav a:hover{color:#2563eb;}
   justify-content:center;
   text-align:center;
   color:white;
+  padding:20px;
+}
+.banner-conteudo{
+  max-width:700px;
+  animation: subir 1s ease;
+}
+
+.banner-conteudo h1{
+  font-size:52px;
+  font-weight:700;
+  margin-bottom:15px;
+  text-shadow:0 3px 10px rgba(0,0,0,0.35);
+}
+
+.banner-conteudo p{
+  font-size:20px;
+  margin-bottom:25px;
+  color:#f3f4f6;
+}
+
+.banner-conteudo button{
+  background:#2563eb;
+  border:none;
+  color:white;
+  padding:14px 28px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:600;
+  transition:0.3s;
+  box-shadow:0 5px 15px rgba(37,99,235,0.4);
+}
+
+.banner-conteudo button:hover{
+  background:#1e40af;
+  transform:scale(1.07);
+}
+
+/* animação */
+@keyframes subir{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+@media(max-width:600px){
+  .banner{
+    height:400px;
+  }
+
+  .banner-conteudo h1{
+    font-size:28px;
+  }
+
+  .banner-conteudo p{
+    font-size:16px;
+  }
 }
 .container{max-width:1200px;margin:auto;padding:40px 20px;}
 .tela{display:none;}.ativa{display:block;}
@@ -65,7 +126,11 @@ footer{text-align:center;padding:20px;background:#2563eb;color:white;margin-top:
 </header>
 
 <div class="banner">
-  <h1>Moda Masculina</h1>
+  <div class="banner-conteudo">
+    <h1>Moda Masculina Premium</h1>
+    <p>Estilo, conforto e elegância para todas as ocasiões</p>
+    <button onclick="mostrar('loja')">Comprar Agora</button>
+  </div>
 </div>
 
 <div class="container">
@@ -210,6 +275,7 @@ function copiarPix(){let chave=document.getElementById("pixKey").innerText;navig
 function confirmarPagamento(){alert("Pedido enviado!");carrinho=[];mostrar("home");}
 function cadastrar(){let email=document.getElementById("emailCad").value;let senha=document.getElementById("senhaCad").value;if(email && senha){localStorage.setItem("usuarioEmail",email);localStorage.setItem("usuarioSenha",senha);alert("Conta criada!");mostrar("login");}else{alert("Preencha todos os campos!");}}
 function login(){let email=document.getElementById("emailLogin").value;let senha=document.getElementById("senhaLogin").value;let emailSalvo=localStorage.getItem("usuarioEmail");let senhaSalva=localStorage.getItem("usuarioSenha");if(email===emailSalvo && senha===senhaSalva){alert("Login realizado!");mostrar("loja");}else{alert("Email ou senha incorretos");}}
+renderizarDestaques();
 </script>
 </body>
 </html>
