@@ -12,8 +12,19 @@ header{background:white;padding:15px 30px;display:flex;justify-content:space-bet
 .logo{font-size:26px;font-weight:700;color:#2563eb;}
 nav a{text-decoration:none;color:#333;cursor:pointer;font-weight:500;margin-left:20px;transition:0.3s;}
 nav a:hover{color:#2563eb;}
-.banner{background:url("https://images.unsplash.com/photo-1445205170230-053b83016050");background-size:cover;background-position:center;height:350px;display:flex;align-items:center;justify-content:center;text-align:center;color:white;}
-.banner h1{font-size:48px;background:rgba(0,0,0,0.5);padding:20px 30px;border-radius:10px;}
+.banner{
+  background:
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    url("banner.jpg");
+  background-size:cover;
+  background-position:center;
+  height:500px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+}
 .container{max-width:1200px;margin:auto;padding:40px 20px;}
 .tela{display:none;}.ativa{display:block;}
 .produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;}
@@ -42,7 +53,6 @@ footer{text-align:center;padding:20px;background:#2563eb;color:white;margin-top:
 </style>
 </head>
 <body>
-
 <header>
 <div class="logo">Oliveira Artigos</div>
 <nav>
